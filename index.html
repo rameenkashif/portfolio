@@ -214,19 +214,20 @@
   .scroll-bar { width: 1px; height: 44px; background: linear-gradient(var(--accent), transparent); animation: scrollPulse 2s infinite; }
   @keyframes scrollPulse { 0% { transform: scaleY(1); opacity: 1; } 50% { transform: scaleY(0.5); opacity: 0.5; } 100% { transform: scaleY(1); opacity: 1; } }
 
-  /* ── hero decorative object placeholders ──
+  /* ── hero decorative object collage ──
      Each is a two-layer element: the outer .hero-object is moved by JS
      for mouse/scroll parallax; the inner .hero-object-inner runs the
-     CSS idle float/entrance animation. To swap in a real image, put an
-     <img> (or a background-image) inside .hero-object-inner and remove
-     the .ph-placeholder class from it — the dashed border + label are
-     only applied while that class is present. */
+     CSS idle float/entrance animation and holds the cutout image. */
   .hero-object { position: absolute; z-index: 1; pointer-events: none; transition: transform 0.15s ease-out; }
   .hero-object-inner {
     width: 100%; height: 100%;
     animation: heroFloat 6s ease-in-out infinite, heroEnter 0.9s cubic-bezier(.2,.8,.3,1) both;
     animation-delay: var(--float-delay, 0s), var(--enter-delay, 0s);
     transform: rotate(var(--rot, 0deg));
+  }
+  .hero-object-inner img {
+    width: 100%; height: 100%; object-fit: contain;
+    filter: drop-shadow(0 18px 26px rgba(0,0,0,0.55));
   }
   .hero-object-inner.ph-placeholder {
     display: flex; align-items: center; justify-content: center;
@@ -247,11 +248,11 @@
     from { opacity: 0; transform: rotate(var(--rot, 0deg)) scale(0.7) translateY(20px); }
     to { opacity: 1; }
   }
-  .hero-object--headphones { top: 10%; left: 5%; width: 160px; height: 145px; --rot: -14deg; --float-delay: 0s; --enter-delay: 0.5s; }
-  .hero-object--ipad { top: 8%; right: 6%; width: 150px; height: 200px; --rot: 9deg; --float-delay: 0.8s; --enter-delay: 0.65s; }
+  .hero-object--headphones { top: 10%; left: 5%; width: 160px; height: 183px; --rot: -14deg; --float-delay: 0s; --enter-delay: 0.5s; }
+  .hero-object--ipad { top: 8%; right: 6%; width: 150px; height: 181px; --rot: 9deg; --float-delay: 0.8s; --enter-delay: 0.65s; }
   .hero-object--star { bottom: 26%; left: 3%; width: 80px; height: 80px; --rot: -18deg; --float-delay: 1.6s; --enter-delay: 0.8s; }
   .hero-object--spider { top: 40%; right: 4%; width: 78px; height: 78px; --rot: 12deg; --float-delay: 2.2s; --enter-delay: 0.95s; }
-  .hero-object--notebook { bottom: 9%; right: 15%; width: 180px; height: 150px; --rot: 6deg; --float-delay: 1.1s; --enter-delay: 1.1s; }
+  .hero-object--notebook { bottom: 9%; right: 15%; width: 145px; height: 174px; --rot: 6deg; --float-delay: 1.1s; --enter-delay: 1.1s; }
 
   @media (max-width: 900px) {
     .hero-object { display: none; }
@@ -519,29 +520,24 @@
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
 
-  <!-- IMAGE: headphones-cutout.png -->
   <div class="hero-object hero-object--headphones" data-depth="1.4">
-    <div class="hero-object-inner ph-placeholder"><span class="ph-label">Headphones</span></div>
+    <div class="hero-object-inner"><img src="assets/hero-headphones.png" alt="" loading="lazy"></div>
   </div>
 
-  <!-- IMAGE: ipad-cutout.png -->
   <div class="hero-object hero-object--ipad" data-depth="1.1">
-    <div class="hero-object-inner ph-placeholder"><span class="ph-label">iPad</span></div>
+    <div class="hero-object-inner"><img src="assets/hero-ipad.png" alt="" loading="lazy"></div>
   </div>
 
-  <!-- IMAGE: star-patch-cutout.png -->
   <div class="hero-object hero-object--star" data-depth="1.8">
-    <div class="hero-object-inner ph-placeholder"><span class="ph-label">Star Patch</span></div>
+    <div class="hero-object-inner"><img src="assets/hero-star-patch.png" alt="" loading="lazy"></div>
   </div>
 
-  <!-- IMAGE: spider-patch-cutout.png -->
   <div class="hero-object hero-object--spider" data-depth="1.6">
-    <div class="hero-object-inner ph-placeholder"><span class="ph-label">Spider Patch</span></div>
+    <div class="hero-object-inner"><img src="assets/hero-spider-patch.png" alt="" loading="lazy"></div>
   </div>
 
-  <!-- IMAGE: notebook-cutout.png -->
   <div class="hero-object hero-object--notebook" data-depth="1.2">
-    <div class="hero-object-inner ph-placeholder"><span class="ph-label">Notebook</span></div>
+    <div class="hero-object-inner"><img src="assets/hero-notebook.png" alt="" loading="lazy"></div>
   </div>
 
   <div class="hero-content">
