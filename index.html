@@ -42,8 +42,14 @@
     pointer-events: none; z-index: 9999;
     image-rendering: pixelated; image-rendering: crisp-edges;
     transform-origin: top left;
-    transition: transform 0.1s ease;
+    transition: transform 0.1s ease, filter 0.15s ease;
     filter: drop-shadow(0 2px 3px rgba(0,0,0,0.4));
+  }
+  .pixel-cursor.cursor-glow {
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.4))
+            drop-shadow(0 0 6px var(--accent))
+            drop-shadow(0 0 14px var(--accent))
+            drop-shadow(0 0 22px rgba(255,74,46,0.6));
   }
 
   body::before {
@@ -267,19 +273,9 @@
     image-rendering: pixelated; image-rendering: crisp-edges;
     filter: drop-shadow(0 10px 14px rgba(0,0,0,0.18));
   }
-  .pixel-blink {
-    position: absolute; top: 13.2%; left: 22.5%; width: 36%; height: 3.4%;
-    background: #d4935f; border-radius: 1px;
-    opacity: 0;
-    animation: pixelBlink 4.6s ease-in-out infinite;
-  }
   @keyframes pixelBob {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-8px); }
-  }
-  @keyframes pixelBlink {
-    0%, 92%, 100% { opacity: 0; }
-    94%, 97% { opacity: 1; }
   }
   @media (max-width: 900px) {
     .pixel-character { display: none; }
@@ -529,7 +525,7 @@
 </style>
 </head>
 <body>
-<img src="assets/pixel-cursor.png" class="pixel-cursor" id="cursor" alt="">
+<img src="assets/pixel-cursor.png" class="pixel-cursor cursor-glow" id="cursor" alt="">
 
 <!-- NAV -->
 <nav>
@@ -711,7 +707,6 @@
 
   <div class="pixel-character">
     <img src="assets/pixel-character.png" alt="">
-    <div class="pixel-blink"></div>
   </div>
 </section>
 
@@ -1040,11 +1035,14 @@
 </footer>
 
 <script>
-  // Custom pixel cursor
+  // Custom pixel cursor — glows orange over dark sections, plain over the light About section
   const cursor = document.getElementById('cursor');
   document.addEventListener('mousemove', e => {
     cursor.style.left = e.clientX + 'px';
     cursor.style.top = e.clientY + 'px';
+    const under = document.elementFromPoint(e.clientX, e.clientY);
+    const onPaper = under && under.closest('.paper');
+    cursor.classList.toggle('cursor-glow', !onPaper);
   });
   document.querySelectorAll('a, button').forEach(el => {
     el.addEventListener('mouseenter', () => { cursor.style.transform = 'scale(1.3)'; });
