@@ -37,21 +37,13 @@
     cursor: none;
   }
 
-  .cursor {
-    position: fixed; width: 12px; height: 12px;
-    background: var(--accent); border-radius: 50%;
+  .pixel-cursor {
+    position: fixed; top: 0; left: 0; width: 22px; height: 35px;
     pointer-events: none; z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: transform 0.1s ease, background 0.2s;
-    mix-blend-mode: screen;
-  }
-  .cursor-ring {
-    position: fixed; width: 36px; height: 36px;
-    border: 1.5px solid var(--accent2); border-radius: 50%;
-    pointer-events: none; z-index: 9998;
-    transform: translate(-50%, -50%);
-    transition: transform 0.18s ease, width 0.2s, height 0.2s;
-    mix-blend-mode: screen;
+    image-rendering: pixelated; image-rendering: crisp-edges;
+    transform-origin: top left;
+    transition: transform 0.1s ease;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.4));
   }
 
   body::before {
@@ -260,7 +252,38 @@
 
   /* ── ABOUT (paper section) ── */
   #about.paper { background: var(--paper); color: var(--paper-ink); }
-  #about { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 5rem; align-items: start; padding-top: 8rem; }
+  #about { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 5rem; align-items: start; padding-top: 8rem; position: relative; }
+
+  /* pixel-art mascot standing at the bottom-left, feet flush with the
+     section's bottom edge (where the dark Skills background begins). */
+  .pixel-character {
+    position: absolute; bottom: 0; left: 1.5rem; width: 108px;
+    aspect-ratio: 448 / 1302;
+    z-index: 1; pointer-events: none;
+    animation: pixelBob 3.2s ease-in-out infinite;
+  }
+  .pixel-character img {
+    display: block; width: 100%; height: auto;
+    image-rendering: pixelated; image-rendering: crisp-edges;
+    filter: drop-shadow(0 10px 14px rgba(0,0,0,0.18));
+  }
+  .pixel-blink {
+    position: absolute; top: 13.2%; left: 22.5%; width: 36%; height: 3.4%;
+    background: #d4935f; border-radius: 1px;
+    opacity: 0;
+    animation: pixelBlink 4.6s ease-in-out infinite;
+  }
+  @keyframes pixelBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes pixelBlink {
+    0%, 92%, 100% { opacity: 0; }
+    94%, 97% { opacity: 1; }
+  }
+  @media (max-width: 900px) {
+    .pixel-character { display: none; }
+  }
   .paper .section-label { color: var(--accent); }
   .paper .section-title { color: var(--paper-ink); }
 
@@ -506,8 +529,7 @@
 </style>
 </head>
 <body>
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<img src="assets/pixel-cursor.png" class="pixel-cursor" id="cursor" alt="">
 
 <!-- NAV -->
 <nav>
@@ -685,6 +707,11 @@
       <div class="fact-item"><div class="fact-key">Email</div><div class="fact-val" style="font-size:0.74rem">rk3march2005@gmail.com</div></div>
       <div class="fact-item"><div class="fact-key">Phone</div><div class="fact-val">0332 2028202</div></div>
     </div>
+  </div>
+
+  <div class="pixel-character">
+    <img src="assets/pixel-character.png" alt="">
+    <div class="pixel-blink"></div>
   </div>
 </section>
 
@@ -1013,32 +1040,15 @@
 </footer>
 
 <script>
-  // Custom cursor
+  // Custom pixel cursor
   const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
   document.addEventListener('mousemove', e => {
-    mouseX = e.clientX; mouseY = e.clientY;
-    cursor.style.left = mouseX + 'px';
-    cursor.style.top = mouseY + 'px';
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
   });
-  function animateRing() {
-    ringX += (mouseX - ringX) * 0.12;
-    ringY += (mouseY - ringY) * 0.12;
-    ring.style.left = ringX + 'px';
-    ring.style.top = ringY + 'px';
-    requestAnimationFrame(animateRing);
-  }
-  animateRing();
   document.querySelectorAll('a, button').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      ring.style.width = '54px'; ring.style.height = '54px';
-      cursor.style.transform = 'translate(-50%,-50%) scale(1.5)';
-    });
-    el.addEventListener('mouseleave', () => {
-      ring.style.width = '36px'; ring.style.height = '36px';
-      cursor.style.transform = 'translate(-50%,-50%) scale(1)';
-    });
+    el.addEventListener('mouseenter', () => { cursor.style.transform = 'scale(1.3)'; });
+    el.addEventListener('mouseleave', () => { cursor.style.transform = 'scale(1)'; });
   });
 
   // Hero collage parallax — mouse-driven on desktop, scroll-driven fallback for touch
