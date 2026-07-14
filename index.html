@@ -260,10 +260,11 @@
   #about.paper { background: var(--paper); color: var(--paper-ink); }
   #about { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 5rem; align-items: stretch; padding-top: 8rem; position: relative; }
 
-  /* pixel-art mascot standing beside the Phone fact card */
-  .about-facts-row { display: flex; align-items: flex-end; gap: 1.2rem; margin-top: 2.4rem; }
+  /* pixel-art mascot standing at the bottom-left, feet flush with the
+     section's bottom edge (where the dark Skills background begins). */
   .pixel-character {
-    width: 74px; aspect-ratio: 448 / 1302; flex-shrink: 0;
+    position: absolute; bottom: 0; left: 1.5rem; width: 108px;
+    aspect-ratio: 448 / 1302;
     z-index: 1; pointer-events: none;
     animation: pixelBob 3.2s ease-in-out infinite;
   }
@@ -282,11 +283,16 @@
   .paper .section-label { color: var(--accent); }
   .paper .section-title { color: var(--paper-ink); }
 
-  .about-photo { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; }
-  .about-photo-frame { position: relative; width: 100%; flex: 1; min-height: 0; }
+  .about-photo { position: relative; z-index: 1; height: 100%; }
+  .about-photo-frame { position: relative; width: 100%; height: 100%; }
   .about-photo-frame img { width: 100%; height: 100%; object-fit: contain; object-position: center top; }
-  .about-photo-tags { display: flex; gap: 0.6rem; margin-top: 1.6rem; flex-wrap: wrap; }
+  /* lifted clear of the mascot's ~314px height (+ margin) so the two don't overlap */
+  .about-photo-tags {
+    position: absolute; left: 0; bottom: 350px; z-index: 3;
+    display: flex; gap: 0.6rem; flex-wrap: wrap;
+  }
   .paper .pill { background: transparent; border-color: var(--paper-line); color: var(--paper-ink-dim); }
+  .paper .about-photo-tags .pill { background: rgba(243,238,226,0.94); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
   .about-photo-tags .pill:nth-child(2) { transform: rotate(2deg); }
 
   .about-text .bio p { color: var(--paper-ink-dim); line-height: 1.8; margin-bottom: 1.1rem; font-size: 1rem; max-width: 640px; }
@@ -332,7 +338,7 @@
   .tool-badge:hover .tool-badge-icon.logo-img { transform: translateY(-3px); box-shadow: 0 8px 18px rgba(0,0,0,0.18); }
   .tool-badge-label { font-size: 0.62rem; color: var(--paper-ink-dim); text-align: center; line-height: 1.2; }
 
-  .about-facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; flex: 1; }
+  .about-facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 2.4rem; }
   .paper .fact-item { border: 1px solid var(--paper-line); background: rgba(0,0,0,0.02); }
   .fact-item { padding: 1rem 1.2rem; border-radius: 4px; transition: border-color 0.25s, background 0.25s; }
   .paper .fact-item:hover { border-color: var(--accent); background: rgba(255,74,46,0.06); }
@@ -691,17 +697,16 @@
       </div>
     </div>
 
-    <div class="about-facts-row">
-      <div class="about-facts">
-        <div class="fact-item"><div class="fact-key">University</div><div class="fact-val">NUST MCS</div></div>
-        <div class="fact-item"><div class="fact-key">Degree</div><div class="fact-val">BE Software Eng.</div></div>
-        <div class="fact-item"><div class="fact-key">Email</div><div class="fact-val" style="font-size:0.74rem">rk3march2005@gmail.com</div></div>
-        <div class="fact-item"><div class="fact-key">Phone</div><div class="fact-val">0332 2028202</div></div>
-      </div>
-      <div class="pixel-character">
-        <img src="assets/pixel-character.png" alt="">
-      </div>
+    <div class="about-facts">
+      <div class="fact-item"><div class="fact-key">University</div><div class="fact-val">NUST MCS</div></div>
+      <div class="fact-item"><div class="fact-key">Degree</div><div class="fact-val">BE Software Eng.</div></div>
+      <div class="fact-item"><div class="fact-key">Email</div><div class="fact-val" style="font-size:0.74rem">rk3march2005@gmail.com</div></div>
+      <div class="fact-item"><div class="fact-key">Phone</div><div class="fact-val">0332 2028202</div></div>
     </div>
+  </div>
+
+  <div class="pixel-character">
+    <img src="assets/pixel-character.png" alt="">
   </div>
 </section>
 
